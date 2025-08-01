@@ -39,6 +39,8 @@ app.post('/employees', async (req, res) => {
 });
 
 app.get('/employees', async (req, res) => {
+    const database = client.db('cluster0');
+    const collection = database.collection('employees');
     const employees = await collection.find().toArray();
 
     res.json(employees);
