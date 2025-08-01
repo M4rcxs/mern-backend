@@ -26,8 +26,6 @@ app.post('/employees', async (req, res) => {
     const database = client.db('cluster0');
     const collection = database.collection('employees');
 
-    console.log(database, collection);
-
     const existing = await collection.findOne({ id });
 
     if (existing) {
