@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const MongoClient = require('mongodb').MongoClient
-const { getStores } = require('./utils/stores');
+import storesApp from './utils/stores.js';
 
 
 const client = new MongoClient(process.env.MONGO_URI);
@@ -14,8 +14,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 })
 
-app.use('/stores', getStores);
-
+app.use(storesApp)
 app.use(express.json());
 
 app.post('/employees', async (req, res) => {
