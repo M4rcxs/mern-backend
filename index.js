@@ -1,9 +1,18 @@
 const express = require('express')
 
 const app = express()
+const cors = require('cors')
+app.use(cors())
 require('dotenv').config()
 const MongoClient = require('mongodb').MongoClient
 import storesApp from './utils/stores.js';
+app.use(storesApp)
+
+cors({
+  origin: '*',
+    methods: ['GET', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+});
 
 
 const client = new MongoClient(process.env.MONGO_URI);
@@ -14,7 +23,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 })
 
-app.use(storesApp)
+
 app.use(express.json());
 
 app.post('/employees', async (req, res) => {
