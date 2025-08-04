@@ -3,18 +3,20 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const MongoClient = require('mongodb').MongoClient
+const { getStores } = require('./utils/stores');
+
 
 const client = new MongoClient(process.env.MONGO_URI);
 
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Vercel deployment successful!')
+  res.send('Hello World!');
 })
 
-app.use(express.json());
+app.use('/stores', getStores);
 
-let employees = [];
+app.use(express.json());
 
 app.post('/employees', async (req, res) => {
     const { id, name, role } = req.body;
@@ -62,3 +64,5 @@ app.delete('/employees/:id', async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+module.exports = app;
