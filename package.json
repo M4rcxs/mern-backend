@@ -10,9 +10,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@huggingface/inference": "^4.6.1",
+    "axios": "^1.11.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "mongodb": "6.17"
+    "mongodb": "6.17",
+    "node-fetch": "^3.3.2",
+    "openai": "^5.12.2"
   }
 }
