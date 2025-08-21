@@ -1,9 +1,10 @@
 const express = require("express");
 const axios = require("axios");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 
-// Função Haversine para calcular distância em metros
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371000; // raio da Terra em metros
 
@@ -19,7 +20,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
             Math.sin(deltaLon / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-  return R * c; // distância em metros
+  return R * c; 
 }
 
 // Endpoint para buscar estações próximas
@@ -74,6 +75,25 @@ app.get("/stations-nearby", async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar estações" });
   }
 });
+
+app.get("/geocode", async (req, res) => {
+  const { q } = req.query;
+
+  if (!q) return res.status(400).json({ error: "Missing query parameter 'q'" });
+
+  try {
+    const response = await axios.get("https://nominatim.openstreetmap.org/search", {
+      params: { q, format: "json" },
+      headers: { "User-Agent": "OndeTemBikeApp/1.0" } 
+    });
+
+    res.json(response.data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro na busca por bairro" });
+  }
+});
+
 
 const PORT = 3000;
 app.listen(PORT, () => {
