@@ -23,14 +23,12 @@ function getDistance(lat1, lon1, lat2, lon2) {
   return R * c; 
 }
 
-// Endpoint para buscar estações próximas
 app.get("/stations-nearby", async (req, res) => {
   const { lat, lon, radius = 1000 } = req.query;
 
   if (!lat || !lon) return res.status(400).json({ error: "Missing lat/lon" });
 
   try {
-    // Pega feed GBFS do Bike Itaú RJ
     const root = "https://riodejaneiro.publicbikesystem.net/customer/gbfs/v2/gbfs.json";
     const { data } = await axios.get(root);
     const feeds = data.data.en.feeds; // pt ou en
@@ -45,7 +43,6 @@ app.get("/stations-nearby", async (req, res) => {
     const stations = infoRes.data.data.stations;
     const statuses = statusRes.data.data.stations;
 
-    // Merge info + status + calcula distância
     const merged = stations.map(station => {
       const status = statuses.find(s => s.station_id === station.station_id);
       const distance = getDistance(parseFloat(lat), parseFloat(lon), station.lat, station.lon);
